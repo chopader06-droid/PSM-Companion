@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSM Field Companion 2025</title>
+    <style>
+        :root {
+            --primary: #007aff; /* Medical Blue */
+            --bg: #f2f2f7;
+            --card-bg: #ffffff;
+            --text-main: #1c1c1e;
+            --text-sec: #8e8e93;
+            --success: #34c759;
+            --danger: #ff3b30;
+            --border-radius: 16px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        body { background-color: var(--bg); color: var(--text-main); padding-bottom: 80px; }
+
+        header {
+            background: var(--card-bg);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 { font-size: 1.2rem; font-weight: 600; }
+        h2 { font-size: 1rem; color: var(--text-sec); font-weight: 500; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 0.9rem; margin-bottom: 8px; font-weight: 500; }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #d1d1d6;
+            border-radius: 10px;
+            background: #fff;
+            appearance: none; /* iOS fix */
+        }
+        
+        input:focus, select:focus { outline: none; border-color: var(--primary); }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        .btn:active { opacity: 0.8; }
+
+        .result-box {
+            background: #eef7ff;
+            border: 1px solid #cce4ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .result-box.show { display: block; }
+        .result-title { font-size: 0.85rem; color: var(--text-sec); margin-bottom: 4px; }
+        .result-value { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+        .tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; margin-top: 5px; }
+        .tag-green { background: #d4f7dc; color: #155724; }
+        .tag-red { background: #ffebeb; color: #c92a2a; }
+        .tag-blue { background: #eef7ff; color: #0056b3; }
+
+        /* Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #d1d1d6;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-sec);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-item.active { color: var(--primary); font-weight: 600; }
+        .nav-icon { display: block; font-size: 1.5rem; margin-bottom: 2px; }
+
+        /* Utility */
+        .hidden { display: none; }
+        .note { font-size: 0.75rem; color: var(--text-sec); margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>PSM Field Companion</h1>
+</header>
+
+<div class="container">
+
+    <div id="section-ses" class="fade-in">
+        <h2>Modified Kuppuswamy (2025)</h2>
+        
+        <div class="card">
+            <div class="form-group">
+                <label>Current CPI (Industrial Workers - Base 2016)</label>
+                <input type="number" id="cpiInput" value="143.2" placeholder="e.g. 143.2">
+                <p class="note">This auto-updates income ranges using standard linking factors.</p>
+            </div>
+            
+            <div class="form-group">
+                <label>Head of Family Education</label>
+                <select id="eduSelect">
+                    <option value="7">Professional Degree (7)</option>
+                    <option value="6">Graduate / Post Graduate (6)</option>
+                    <option value="5">Intermediate / Diploma (5)</option>
+                    <option value="4">High School Certificate (4)</option>
+                    <option value="3">Middle School Certificate (3)</option>
+                    <option value="2">Primary School Certificate (2)</option>
+                    <option value="1">Illiterate (1)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Head of Family Occupation</label>
+                <select id="occSelect">
+                    <option value="10">Professional (10)</option>
+                    <option value="6">Semi-Professional (6)</option>
+                    <option value="5">Clerical / Shop Owner / Farmer (5)</option>
+                    <option value="4">Skilled Worker (4)</option>
+                    <option value="3">Semi-Skilled Worker (3)</option>
+                    <option value="2">Unskilled Worker (2)</option>
+                    <option value="1">Unemployed (1)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Monthly Family Income (₹)</label>
+                <input type="number" id="incomeInput" placeholder="Enter total monthly income">
+            </div>
+
+            <button class="btn" onclick="calculateSES()">Calculate SES</button>
+
+            <div id="sesResult" class="result-box">
+                <div class="result-title">Socio-Economic Status</div>
+                <div class="result-value" id="sesClass">--</div>
+                <div class="note">Total Score: <span id="sesScore">--</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section-nutri" class="hidden">
+        <h2>Nutritional Assessment</h2>
+        
+        <div class="card">
+            <div class="form-group">
+                <label>Weight (kg)</label>
+                <input type="number" id="weight" placeholder="e.g. 65">
+            </div>
+            <div class="form-group">
+                <label>Height (cm)</label>
+                <input type="number" id="height" placeholder="e.g. 170">
+            </div>
+
+            <button class="btn" onclick="calculateBMI()">Assess Nutrition</button>
+
+            <div id="nutriResult" class="result-box">
+                <div class="result-title">BMI Result</div>
+                <div class="result-value" id="bmiValue">--</div>
+                <div id="bmiClass" class="tag">--</div>
+                <p class="note" style="margin-top:8px;">Based on Asian Indian Consensus Guidelines</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('ses', this)">
+        <span class="nav-icon">📊</span>
+        SES Calc
+    </button>
+    <button class="nav-item" onclick="switchTab('nutri', this)">
+        <span class="nav-icon">🍎</span>
+        Nutrition
+    </button>
+</nav>
+
+<script>
+    // --- SES Logic ---
+    function calculateSES() {
+        // 1. Get Inputs
+        const cpi = parseFloat(document.getElementById('cpiInput').value) || 143.2;
+        const eduScore = parseInt(document.getElementById('eduSelect').value);
+        const occScore = parseInt(document.getElementById('occSelect').value);
+        const income = parseFloat(document.getElementById('incomeInput').value);
+
+        if (!income) {
+            alert("Please enter monthly family income.");
+            return;
+        }
+
+        // 2. Calculate Conversion Factor (The "Real" Way using Linking Factors)
+        // Base 2016 -> 2001 (Link 2.88) -> 1982 (Link 4.63) -> 1960 (Link 4.93)
+        // Base Index for 1976 Income Scale was 296 (on 1960 base).
+        // Multiplier = (CurrentCPI_2016 * 2.88 * 4.63 * 4.93) / 296
+        
+        // Simplified Logic: The total linking factor from 2016 to 1960 is approx 65.74
+        const index1960 = cpi * 65.744; 
+        const conversionFactor = index1960 / 296; 
+
+        // 3. Determine Income Score based on Dynamic Ranges
+        // Base 1976 Ranges: >2000, 1000-1999, 750-999, 500-749, 300-499, 100-299, <100
+        let incomeScore = 0;
+        
+        if (income >= (2000 * conversionFactor)) incomeScore = 12;
+        else if (income >= (1000 * conversionFactor)) incomeScore = 10;
+        else if (income >= (750 * conversionFactor)) incomeScore = 6;
+        else if (income >= (500 * conversionFactor)) incomeScore = 4;
+        else if (income >= (300 * conversionFactor)) incomeScore = 3;
+        else if (income >= (100 * conversionFactor)) incomeScore = 2;
+        else incomeScore = 1;
+
+        // 4. Total Score
+        const totalScore = eduScore + occScore + incomeScore;
+
+        // 5. Classify
+        let sesClass = "";
+        if (totalScore >= 26) sesClass = "Upper (I)";
+        else if (totalScore >= 16) sesClass = "Upper Middle (II)";
+        else if (totalScore >= 11) sesClass = "Lower Middle (III)";
+        else if (totalScore >= 5) sesClass = "Upper Lower (IV)";
+        else sesClass = "Lower (V)";
+
+        // 6. Display
+        document.getElementById('sesResult').classList.add('show');
+        document.getElementById('sesClass').innerText = sesClass;
+        document.getElementById('sesScore').innerText = `${totalScore} (Edu: ${eduScore}, Occ: ${occScore}, Income: ${incomeScore})`;
+    }
+
+    // --- Nutrition Logic ---
+    function calculateBMI() {
+        const weight = parseFloat(document.getElementById('weight').value);
+        const height = parseFloat(document.getElementById('height').value);
+
+        if (!weight || !height) {
+            alert("Please enter weight and height.");
+            return;
+        }
+
+        // BMI = kg / m^2
+        const bmi = weight / ((height / 100) ** 2);
+        const roundedBMI = bmi.toFixed(1);
+
+        let classification = "";
+        let colorClass = "tag-blue";
+
+        // Asian Indian Guidelines
+        if (bmi < 18.5) {
+            classification = "Underweight";
+            colorClass = "tag-red";
+        } else if (bmi >= 18.5 && bmi <= 22.9) {
+            classification = "Normal";
+            colorClass = "tag-green";
+        } else if (bmi >= 23 && bmi <= 24.9) {
+            classification = "Overweight";
+            colorClass = "tag-red";
+        } else {
+            classification = "Obese";
+            colorClass = "tag-red";
+        }
+
+        const resultBox = document.getElementById('nutriResult');
+        resultBox.classList.add('show');
+        
+        document.getElementById('bmiValue').innerText = roundedBMI + " kg/m²";
+        const tag = document.getElementById('bmiClass');
+        tag.innerText = classification;
+        tag.className = "tag " + colorClass;
+    }
+
+    // --- Tab Switching ---
+    function switchTab(tab, btn) {
+        // Hide all
+        document.getElementById('section-ses').classList.add('hidden');
+        document.getElementById('section-nutri').classList.add('hidden');
+        
+        // Reset nav buttons
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+
+        // Show selected
+        document.getElementById('section-' + tab).classList.remove('hidden');
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
